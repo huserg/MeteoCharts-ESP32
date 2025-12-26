@@ -1,9 +1,13 @@
 # PlatformIO Build - Run from Windows
-# Usage: .\pio-build.ps1 [COM_PORT]
-# Example: .\pio-build.ps1 COM5
+# Usage: .\pio-build.ps1 [ENV] [COM_PORT] [-MonitorOnly]
+# Example: .\pio-build.ps1 esp32c3 COM5
+#          .\pio-build.ps1 lolin_d32
+#          .\pio-build.ps1 esp32c3 COM6 -MonitorOnly
 
 param(
-    [string]$Port = ""
+    [string]$Env = "lolin_d32",
+    [string]$Port = "",
+    [switch]$MonitorOnly
 )
 
 $ProjectName = "MeteoCharts"
@@ -11,6 +15,7 @@ $WinPath = "C:\Pio\$ProjectName"
 $SourcePath = $PSScriptRoot
 
 Write-Host "=== MeteoCharts PlatformIO Build ===" -ForegroundColor Magenta
+Write-Host "Environment: $Env" -ForegroundColor Gray
 
 # Auto-detect or use provided port
 if (!$Port) {
@@ -83,10 +88,18 @@ if (Test-Path $configSrc) {
     Write-Host "  Configuration/" -ForegroundColor Gray
 }
 
+# Monitor only mode
+if ($MonitorOnly) {
+    Write-Host "`nStarting monitor on $Port..." -ForegroundColor Yellow
+    Set-Location $WinPath
+    & $pioExe device monitor --port $Port
+    exit 0
+}
+
 # Build and upload
-Write-Host "`nBuilding and uploading to $Port..." -ForegroundColor Green
+Write-Host "`nBuilding [$Env] and uploading to $Port..." -ForegroundColor Green
 Set-Location $WinPath
-& $pioExe run -t upload --upload-port $Port
+& $pioExe run -e $Env -t upload --upload-port $Port
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "`nUpload OK - Starting monitor on $Port..." -ForegroundColor Green
