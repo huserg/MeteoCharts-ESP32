@@ -1,3 +1,4 @@
+#include <Wire.h>
 #include <Adafruit_BME280.h>
 #include <Adafruit_SSD1306.h> // https://github.com/ThingPulse/esp8266-oled-ssd1306
 #include <WiFi.h>
@@ -38,8 +39,11 @@ void setup() {
   LedTrigger(LED_PIN, false);
 
   Serial.begin(115200);
-  while(!Serial);    // time to get serial running
+  unsigned long serialTimeout = millis();
+  while(!Serial && millis() - serialTimeout < 3000);
   Serial.println("Ready...");
+
+  Wire.begin(SDA, SCL);
 
   SetupDisplay();
 
@@ -267,9 +271,9 @@ void SetupDisplay() {
 
   if(!screen.begin(SSD1306_SWITCHCAPVCC, SSD1306_BUS)) {
     Serial.println(F("SSD1306 allocation failed"));
-    for(;;);
-    screen.clearDisplay();
+    return;
   }
+  screen.clearDisplay();
   DrawBaseDisplayInfos();
 }
 
