@@ -4,6 +4,7 @@
 
 // Select your device configuration (uncomment one)
 #include "Configuration/devices/lolin_d32_00A4.h"
+// #include "Configuration/devices/esp32c3_5F90.h"
 // #include "Configuration/devices/esp32c3_template.h"
 
 // Server config
