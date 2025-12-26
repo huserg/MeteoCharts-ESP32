@@ -317,36 +317,39 @@ void DrawBatteryStatus() {
 }
 
 void DrawData() {
-  if (!HAS_DISPLAY) 
+  if (!HAS_DISPLAY)
     return;
-  
-    char str [80];
-    screen.setTextColor(SSD1306_WHITE);
 
-    if (SCREEN_HEIGHT == 32) {
-      screen.setTextSize(1);
-      /* 1 line */
-      screen.setCursor(0, screen.height() - 8);
-      sprintf(str, "%.0f C%c %.0f %% %.0f hPa", temp, (char)247, hum, hpa);
-      screen.print(str);
-    }
-    if (SCREEN_HEIGHT == 64) {
-      screen.setTextSize(2);
-      /* 3 lines */
-      screen.setCursor(0, 17);
-      sprintf(str, "%.1f C%c", temp, (char)247);
-      screen.print(str);
+  char str[80];
+  screen.setTextColor(SSD1306_WHITE);
 
-      screen.setCursor(0, 17 + 34);
-      sprintf(str, "%.1f %%", hum);
-      screen.print(str);
+  if (SCREEN_HEIGHT <= 32) {
+    // Small screen: single line
+    screen.setTextSize(1);
+    screen.setCursor(0, SCREEN_HEIGHT - 8);
+    sprintf(str, "%.0f C%c %.0f %% %.0f hPa", temp, (char)247, hum, hpa);
+    screen.print(str);
+  } else {
+    // Larger screen: 3 lines with dynamic spacing
+    screen.setTextSize(2);
+    int lineHeight = 16;
+    int startY = 16;
+    int spacing = (SCREEN_HEIGHT - startY - lineHeight) / 2;
 
-      screen.setCursor(0, 17 + 50);
-      sprintf(str, "%.3f hPa", hpa);
-      screen.print(str);
-    }
+    screen.setCursor(0, startY);
+    sprintf(str, "%.1f C%c", temp, (char)247);
+    screen.print(str);
 
-    screen.display();
+    screen.setCursor(0, startY + spacing);
+    sprintf(str, "%.1f %%", hum);
+    screen.print(str);
+
+    screen.setCursor(0, startY + spacing * 2);
+    sprintf(str, "%.0f hPa", hpa);
+    screen.print(str);
+  }
+
+  screen.display();
 }
 
 void DrawLoading(){
