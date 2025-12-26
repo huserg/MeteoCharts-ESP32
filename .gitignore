@@ -18,8 +18,12 @@ src/ESP32_Espidf/.vscode/ipch
 cmake-build-debug/
 src/ESP32_Arduino/MeteoCharts/cmake-build-debug/
 
-# Project
+# Project - secrets
 src/ESP32_Arduino/MeteoCharts/conf.h
 src/ESP32_Arduino/MeteoCharts/conf_d32.h
+src/ESP32_Arduino/Configuration/conf_wifi.h
 src/ESP32_Arduino/ArduinoOutput/*
 !src/ESP32_Arduino/ArduinoOutput/.gitignore
+
+# PlatformIO
+src/ESP32_Arduino/MeteoCharts/.pio/

@@ -1,25 +1,15 @@
-// Description: Configuration file for the ESP32
+// Main configuration - Copy to MeteoCharts/conf.h
+#ifndef CONF_H
+#define CONF_H
 
-// General
-const bool HAS_LED = 0;
-const bool HAS_BATTERY = 0;
-const bool HAS_DISPLAY = 0;
+// Select your device configuration (uncomment one)
+#include "Configuration/devices/lolin_d32_00A4.h"
+// #include "Configuration/devices/esp32c3_template.h"
 
-#define LED_PIN 3
-#define SDA 8
-#define SCL 9
-#define BME280_BUS 0x76
-#define SSD1306_BUS 0x3C // Address 0x3D for 128x64 ??
-#define SCREEN_HEIGHT 32 // 32 or 64
-#define SCREEN_WIDTH 128
-#define OLED_RESET -1
-#define BATTERY_PIN 0
+// Server config
+#include "Configuration/conf_server.h"
 
-// Local Wi-Fi connection
-const char* SSID = "YOUR_SSID";
-const char* PASSWORD = "YOUR_PASSWORD";
+// WiFi credentials (create from conf_wifi.h.example)
+#include "Configuration/conf_wifi.h"
 
-// MeteoCharts Server Connection
-const uint16_t HTTP_PORT   = 443;
-const String SERVER_NAME = "meteo.husnet.ch"; // hostname of web server:
-
+#endif
