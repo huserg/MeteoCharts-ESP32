@@ -1,6 +1,7 @@
 {
     "board": "esp32:esp32:d32",
     "configuration": "PartitionScheme=default,FlashFreq=80,UploadSpeed=921600,DebugLevel=none",
-    "sketch": "MeteoCharts\\MeteoCharts.ino",
-    "port": "COM3"
+    "sketch": "src/ESP32_Arduino/MeteoCharts/MeteoCharts.ino",
+    "port": "COM6",
+    "programmer": "esptool"
 }
