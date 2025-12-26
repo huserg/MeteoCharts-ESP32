@@ -24,4 +24,9 @@ const bool HAS_DISPLAY = true;
 // Sleep duration (microseconds)
 #define SLEEP_DURATION_US (15 * 60 * 1000000ULL)
 
+// Power saving
+#define CPU_FREQ_MHZ 80
+#define WIFI_OFF_BEFORE_SLEEP true
+#define DISPLAY_DIM true
+
 #endif

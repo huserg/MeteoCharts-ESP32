@@ -38,6 +38,8 @@ void setup() {
   
   LedTrigger(LED_PIN, false);
 
+  setCpuFrequencyMhz(CPU_FREQ_MHZ);
+
   Serial.begin(115200);
   unsigned long serialTimeout = millis();
   while(!Serial && millis() - serialTimeout < 3000);
@@ -68,7 +70,6 @@ void loop() {
 
   bool bmp_success = GetMeteoChartsData();
 
-  delay(500);
   DrawBaseDisplayInfos();
 
   if(bmp_success) {
@@ -82,7 +83,13 @@ void loop() {
 
   WebRequest();
 
-  esp_deep_sleep(15 * 60e6); // Sleep for 15 min (60e6 = 1min)
+  // Power saving before sleep
+  if (WIFI_OFF_BEFORE_SLEEP) {
+    WiFi.disconnect(true);
+    WiFi.mode(WIFI_OFF);
+  }
+
+  esp_deep_sleep(SLEEP_DURATION_US);
 }
 
 // ------------------  SENSOR  -------------------------
@@ -273,6 +280,7 @@ void SetupDisplay() {
     Serial.println(F("SSD1306 allocation failed"));
     return;
   }
+  screen.dim(DISPLAY_DIM);
   screen.clearDisplay();
   DrawBaseDisplayInfos();
 }
